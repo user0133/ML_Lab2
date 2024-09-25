@@ -11,7 +11,7 @@ def load_csv_data(file_path):
     with open(file_path, 'r', encoding='utf-8-sig') as file:
         lines = file.readlines()
         headers = lines[0].strip().split(',')
-        print("Headers: {headers}")
+        #pdb.set_trace() start and stop the debugger
         for line in lines[1:]:
             row = line.strip().split(',')
             data.append([float(x) for x in row])
@@ -105,7 +105,7 @@ def predict_new_values(new_values, theta):
     return predict(new_values, theta)
 
 # Example new input values for prediction
-new_input = np.array([[20], [30]])
+new_input = np.array([[20], [30], [35], [37]])
 predicted_Y = predict_new_values(new_input, theta)
 
 # Display the predictions for the new input values
