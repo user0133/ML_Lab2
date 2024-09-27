@@ -43,28 +43,26 @@ data, headers, clean_data = load_csv_data(file_path)
 
 df = save_data_in_df(clean_data, headers)
 
-# Step 2: Assume df is your DataFrame
-# Replace 'feature_column' with the actual feature column name(s)
-# Replace 'target_column' with the actual target column name
+# 2. input feature(s) and target variable
 X = df[['age']]  # Input feature(s)
 y = df['2020']     # Target variable
 
-# Step 3: Generate Polynomial Features
+# 3. Generate Polynomial Features
 degree = 8 # Set the degree for the polynomial features
 poly_features = PolynomialFeatures(degree=degree)
 X_poly = poly_features.fit_transform(X)  # Generate polynomial features
 
-# Step 4: Train the Linear Regression Model
+# 4. Train the Linear Regression Model
 model = LinearRegression()
 model.fit(X_poly, y)
 
-# Step 5: Make Predictions
+# 5. Make Predictions
 y_pred = model.predict(X_poly)
 
-# Optional, split the data into training and testing sets if needed
+# 6. Optional, split the data into training and testing sets if needed
 #X_train, X_test, y_train, y_test = train_test_split(X_poly, y, test_size=0.2, random_state=42)
 
-# Optional: Visualization (if X has only one feature for easy plotting)
+# 7. Visualization (as X has only one feature age )
 if X.shape[1] == 1:
     #plt.scatter(X, y, color='blue', label='Original Data')
     plt.plot(X, y_pred, color='red', label=f'Polynomial Regression (degree={degree})')
@@ -73,8 +71,3 @@ if X.shape[1] == 1:
     plt.title('Polynomial Regression of Age and Income (no split)')
     plt.legend()
     plt.show()
-
-# Step 6: Evaluate the Model (if desired)
-# For example, R-squared score
-r_squared = model.score(X_poly, y)
-print(f'R-squared score: {r_squared}')
