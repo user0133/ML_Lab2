@@ -12,7 +12,7 @@ def find_reverse_pairs(word_list):
             word_set.remove(reversed_word)
 
     return reverse_pairs
-words = ['hello','bye', 'boon','noob', 'star', 'rats']
+words = ['hello','bye', 'boon','noob', 'star', 'rats','pets','step']
 reverse_pairs = find_reverse_pairs(words)
 print("Reverse pairs:", reverse_pairs)
 
