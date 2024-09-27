@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import train_test_split
 import pdb
 import re
@@ -35,6 +36,9 @@ def load_csv_data(file_path):
 def save_data_in_df(data, header):
     return pd.DataFrame(data, columns=header)
 
+def calculate_mse(actual, predicted):
+    return mean_squared_error(actual, predicted)
+
 
 file_path = 'inc_utf.csv'
 
@@ -43,12 +47,15 @@ data, headers, clean_data = load_csv_data(file_path)
 
 df = save_data_in_df(clean_data, headers)
 
+Y_val = df[headers[2]].astype(float).values
+
+
 # 2. input feature(s) and target variable
 X = df[['age']]  # Input feature(s)
 y = df['2020']     # Target variable
 
 # 3. Generate Polynomial Features
-degree = 8 # Set the degree for the polynomial features
+degree = 2 # Set the degree for the polynomial features
 poly_features = PolynomialFeatures(degree=degree)
 X_poly = poly_features.fit_transform(X)  # Generate polynomial features
 
@@ -57,15 +64,25 @@ model = LinearRegression()
 model.fit(X_poly, y)
 
 # 5. Make Predictions
-y_pred = model.predict(X_poly)
+y_predicted = model.predict(X_poly)
+
+
+calculated_mse = calculate_mse(Y_val, y_predicted)
+print('calculated_mse',calculated_mse)
+
+# for Degree 8 - MSE = 432.42746677001645
+# for Degree 5 - MSE = 565.9168770294016
+# for Degree 3 - MSE = 589.6244030672973
+# for Degree 2 - MSE = 2851.480271390016
+
 
 # 6. Optional, split the data into training and testing sets if needed
 #X_train, X_test, y_train, y_test = train_test_split(X_poly, y, test_size=0.2, random_state=42)
 
 # 7. Visualization (as X has only one feature age )
 if X.shape[1] == 1:
-    #plt.scatter(X, y, color='blue', label='Original Data')
-    plt.plot(X, y_pred, color='red', label=f'Polynomial Regression (degree={degree})')
+    plt.scatter(X, y, color='blue', label='Original Data')
+    plt.plot(X, y_predicted, color='red', label=f'Polynomial Regression (degree={degree})')
     plt.xlabel('Age')
     plt.ylabel('Income of 2020 (Year)')
     plt.title('Polynomial Regression of Age and Income (no split)')
